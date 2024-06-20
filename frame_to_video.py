@@ -54,7 +54,7 @@ class CamBuffer:
             self.reset()
 
 class FrameToVideo:
-    def __init__(self, cam:CamBuffer, video_length, usegpu=True):
+    def __init__(self, cam:CamBuffer, video_length, usegpu=True, fps=30):
         """
             Parameters:
             - video_length: 비디오의 재생시간. 초 단위.
@@ -72,7 +72,7 @@ class FrameToVideo:
                 '-vcodec', 'rawvideo',
                 '-pix_fmt', 'bgr24',
                 '-s', "{}x{}".format(round(self.resolution[0]),round(self.resolution[1])),
-                '-r', str(30),
+                '-r', str(fps),
                 '-i', '-',
                 '-t', f'{video_length}',
                 '-c:v', 'h264_nvenc',  # NVENC를 사용하여 인코딩
@@ -86,7 +86,7 @@ class FrameToVideo:
                 '-vcodec', 'rawvideo',
                 '-pix_fmt', 'bgr24',
                 '-s', "{}x{}".format(round(self.resolution[0]), round(self.resolution[1])),
-                '-r', str(30),
+                '-r', str(fps),
                 '-i', '-',
                 '-t', f'{video_length}',
                 '-c:v', 'libx264', 
@@ -155,14 +155,14 @@ class FrameToVideo:
             self.process.stdin.write(frame.tobytes())
 
 
-def run(video_url:str, save_video_length:int, save_folder:str, save_video_name:str, usegpu=True, fps=30):
+def run(video_url:str, save_video_length:int, save_folder:str, save_video_name:str, usegpu=False, fps=30):
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
     cam = CamBuffer(video_url, fps*save_video_length)
-    process = FrameToVideo(cam, save_video_length, usegpu)
+    process = FrameToVideo(cam, save_video_length, usegpu, fps)
     process.set_video_url(os.path.join(save_folder, save_video_name))
     process.run()
 
 
 if __name__ == "__main__":    
-    run("http://112.166.0.196:7081/live/dlf&EH0174&/SELF/playlist.m3u8",10,"stream","video.mp4",True)
+    run("http://112.166.0.196:7081/live/dlf&EH0174&/SELF/playlist.m3u8",10,"stream","video.mp4",False)
