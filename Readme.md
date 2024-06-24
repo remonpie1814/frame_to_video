@@ -2,16 +2,20 @@
 
 ffmpeg를 사용해 영상의 주소를 받으면 정해진 시간만큼 녹화해서 mp4로 변환하는 프로그램
 
-설치
-pip install -r requirements.txt
+-   설치
 
-ffmpeg 설치
-https://ffmpeg.org/download.html
+    pip install -r requirements.txt
 
-테스트 실행
-python frame_to_video.py
+-   ffmpeg 설치
 
-모듈 사용방법
-import run from frame_to_video
+    https://ffmpeg.org/download.html
 
-run(영상 주소, 녹화할 영상 길이, 녹화영상 저장폴더, 녹화영상 이름)
+-   테스트 실행
+
+    python frame_to_video.py
+
+-   모듈 사용방법
+
+    import run from frame_to_video
+
+    run(영상 주소, 녹화할 영상 길이(초단위), 녹화영상 저장폴더, 녹화영상 이름, gpu 사용여부(옵션), fps(옵션))
