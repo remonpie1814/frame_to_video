@@ -173,6 +173,15 @@ def run(video_url:str, save_video_length:int, save_folder:str, save_video_name:s
     process.set_video_url(os.path.join(save_folder, save_video_name))
     process.run()
 
+def run_async(video_url:str, save_video_length:int, save_folder:str, save_video_name:str, usegpu=False, fps=30):
+    if not os.path.exists(save_folder):
+        os.makedirs(save_folder)
+    cam = CamBuffer(video_url, fps*save_video_length+fps)
+    process = FrameToVideo(cam, save_video_length, usegpu, fps)
+    process.set_video_url(os.path.join(save_folder, save_video_name))
+    process.run_async()
+
+
 
 if __name__ == "__main__":    
     run("http://112.166.0.196:7081/live/dlf&EH0174&/SELF/playlist.m3u8",10,"stream","video.mp4",False)
